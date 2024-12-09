@@ -1,62 +1,184 @@
-# NextJS Challenge - Seven Sigma Group
+# NextJS Frontend Challenge - Ongrid Protocol
 
-This repository contains a typical NextJS project at Seven Sigma Group.
+This repository contains a frontend challenge based on a typical NextJS project at Ongrid Protocol.
+
+## Project Overview
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and configured with:
 
 1. ESLint and Prettier
 2. Git hooks set up with [Husky](https://typicode.github.io/husky/)
-3. NextJS and React specific folders (`pages`, `styles`, and `layouts`)
+3. NextJS and React specific folders
 4. TypeScript
 5. Tailwind CSS
-Prisma and Docker-Compose with PostgreSQL (only for backend tasks, details below)
 
-## Project structure
+## Challenge Description
+
+You'll be building user profile cards that fetch and display user information, demonstrating your ability to work with React, TypeScript, and modern data fetching practices.
+
+### Tech Stack
+
+- Next.js
+- TypeScript
+- React Query (preferred) / any data fetching library
+- shadcn/ui (preferred) / any UI component library
+- Tailwind CSS
+
+## Project Structure
 
 The app has the following structure:
 
-- `components`: React components used across the app.
-- `pages`: NextJS specific pages. The pages should not contain any styles, and be limited to the page-specific logic.
-  All the presentation and business logic should be implemented as a view.
-- `layouts`: Contains the presentation elements for the pages. Can also include data and business logic.
-- `utils`: Helper functions. There can be 3 sub-folders:
-  - `client`: for client-side utils.
-  - `server`: for server-side only.
-  - `common`: for both. Typically only types.
+```
+src/
+├── components/   # React components used across the app
+├── pages/        # NextJS specific pages (page-specific logic only)
+├── layouts/      # Presentation elements for pages
+├── utils/        # Helper functions
+│   ├── client/   # Client-side utils
+│   ├── server/   # Server-side only
+│   └── common/   # Shared types and utils
+└── hooks/        # Custom React hooks
+```
 
-### API
+## API Specification
 
-You have a NextJS API route available that you can call to fetch all the details.
+A NextJS API route is available to fetch user details:
 
-You can see the code at `src/pages/api/person`
+- Endpoint: `api/user?person={Person.PersonA}`
+- Available users:
+  - Person A (responds in 1 second)
+  - Person B (responds in 3 seconds)
+  - Person C (always fails - use for error handling)
 
-TL;DR:
-- GET endpoint: `api/user?person={Person.PersonA}`
-- Can request values for person A, person B, or person C.
-- Person A returns in one second, person B returns in 3 seconds, person C always fails.
+Response type:
+```typescript
+type User = {
+  backgroundImageUrl: string;
+  profilePictureUrl: string;
+  name: string;
+  title: string;
+  followers: number;
+  following: number;
+};
+```
 
-### Prisma, Docker, and PostgreSQL
+## Requirements
 
-The repository has Prisma set up, as well as a Docker Compose file that will spin up a
-local PostgreSQL.
+### Base Requirements
 
-**If you're only doing the frontend tasks, you don't need to worry about this at all** (not even
-running Docker Compose or adding a `.env` file) -- all the backend functionality you need is
-hard-coded and ready in the API route.
+1. **User Card Component**
+   - Create a reusable card component that displays:
+     - Profile picture
+     - Background image
+     - Name
+     - Title
+     - Follower/Following counts
+   - Implement proper loading and error states
+   - Use shadcn/ui Card component or equivalent
 
-If you are doing the backend tasks, you have more instructions below.
+2. **Data Fetching**
+   - Implement data fetching using React Query
+   - Create a custom `useUserProfile` hook
+   - Handle loading and error states efficiently
 
+3. **User Selection**
+   - Allow switching between users (A, B, C) using buttons
+   - Highlight currently selected user
+   - Handle loading states during user switches
 
-## Prerequisites
+4. **Error Handling**
+   - Display error state for Person C
+   - Add retry functionality
+   - Show appropriate error messages
 
-To set up the codebase and the required dependencies, simply run `npm install`;
+### Nice to Have Features
 
-If you're only doing the frontend tasks, that's all you need.
+1. **Enhanced User Experience**
+   - Add loading skeletons
+   - Implement smooth transitions
+   - Add hover states on cards
 
-### Additional setup for the backend tasks
-For the backend tasks, you'll need these additional steps:
+2. **Data Management**
+   - Cache previously fetched user data
+   - Implement prefetching
+   - Handle concurrent requests
 
-1. Copy `.env.example` into `.env`. _Note: while NextJS supports both `.env` and `.env.local`, Prisma requires a `.env`_.
-2. Install Docker with Docker Compose in your machine. The easiest way is to install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-3. Run the services in Docker Compose: `docker compose up`.
-4. Apply the existing migrations to your DB: `prisma migrate dev` ([docs](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#migrate-dev))
+## Getting Started
+
+### Prerequisites
+
+1. Node.js installed
+2. npm or yarn
+3. Git
+
+### Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Backend Setup (Optional)
+
+If you're only doing the frontend tasks, you don't need these steps. However, if you want to work with the backend:
+
+1. Copy `.env.example` into `.env` (Note: Prisma requires `.env` specifically)
+2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+3. Run services: `docker compose up`
+4. Apply migrations: `prisma migrate dev`
+
+## Evaluation Criteria
+
+- **Code Quality**
+  - TypeScript usage
+  - Component structure
+  - Custom hooks implementation
+  - Error handling
+
+- **Functionality**
+  - User card display
+  - Data fetching implementation
+  - Loading/error states
+  - User switching
+
+- **Technical Implementation**
+  - React Query usage
+  - Component reusability
+  - State management
+  - Type safety
+
+## Submission Guidelines
+
+1. Create a new branch for your implementation
+2. Submit a pull request with:
+   - Implementation overview
+   - Technical decisions explanation
+   - Known limitations
+   - Setup instructions
+
+## Note to Candidates
+
+- Focus on functionality over styling
+- Use the provided UI library components
+- Prioritize proper data fetching and error handling
+- Document any assumptions made
+
+## Bonus Challenges
+
+- Add unit tests for custom hooks
+- Implement SSR with React Query
+- Add keyboard navigation between users
+- Implement advanced error recovery strategies
